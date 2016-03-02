@@ -12,6 +12,8 @@ float radius;
 float x1= 1; float y1=1;
 float zoom=1;
 
+int seed=1;
+
 void setup()
 {
   size(500, 500, P3D);
@@ -19,6 +21,7 @@ void setup()
   makeCtrlPts();
   makeKnots();
 
+  randomSeed(seed);
 
 
   for(int i=0; i<distObjects.length; i++)
@@ -34,6 +37,7 @@ void setup()
 void draw()
 {
   environment();
+  //translate(-width/2,height/2);
 
   background(0);
   lights();
@@ -54,6 +58,7 @@ void makeCtrlPts()
       new PVector(i*width/N_u, random(height), -j*height/N_v);
     }
   }
+
 }
 
 void makeKnots()

@@ -40,8 +40,8 @@ void drawNrml(float du, float dv)
       line(0,0,0, nrml.x*10, nrml.y*10, nrml.z*10);
       popMatrix();
 
-int i=floor(u);
-int j=floor(v);
+      int i=floor(u);
+      int j=floor(v);
       distObjects[i][j].position();
       distObjects[i][j].display();
     }
