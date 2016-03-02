@@ -12,6 +12,7 @@ void draw()
   rect(0,0,50,50);
 }
 
+<<<<<<< HEAD
 float mathAdd (float a, float b)
 {
   return a+b;
@@ -26,3 +27,6 @@ void keyPressed()
 
   // What will happen if I save this hear on line 27?
 }
+=======
+//MAIN BRANCH
+>>>>>>> master
