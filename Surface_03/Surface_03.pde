@@ -15,7 +15,7 @@ float zoom=1;
 int seed=1;
 
 
-//TEST for Fabio
+//TEST02 for Fabio
 void setup()
 {
   size(500, 500, P3D);
