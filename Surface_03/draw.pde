@@ -4,44 +4,46 @@ void drawSurf(float du, float dv)
   noStroke();
 
   boolean odd=false;
+  int l=0;
 
   for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
     odd=!odd; // Every second row is selected
-
+    l++;
+    int m=0;
     for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
-
+      m++;
       float pastU=u; // Memorize current position.
-      if (odd) {u+=du*1.5;} // Every second row should be shifted.
 
-      //strokeWeight(.2);
-      //stroke(0);
+      if (odd) {
+        u+=du*1.5;
+      } // Every second row should be shifted.
 
+
+      PVector [] pt_All= new PVector[6];
       float myCoor= sqrt(0.75); // Calculate the 'v' distance from the middle point.
-      PVector pt_1 = surfPos (u-du,       v          );
-      PVector pt_2 = surfPos (u-du*0.5,   v+dv*myCoor   );
-      PVector pt_3 = surfPos (u+du*0.5,   v+dv*myCoor   );
-      PVector pt_4 = surfPos (u+du,       v          );
-      PVector pt_5 = surfPos (u+du*0.5,   v-dv*myCoor   );
-      PVector pt_6 = surfPos (u-du*0.5,   v-dv*myCoor   );
 
+
+      pt_All[0] = surfPos (u-du, v                 );
+      pt_All[1] = surfPos (u-du*0.5, v+dv*myCoor   );
+      pt_All[2] = surfPos (u+du*0.5, v+dv*myCoor   );
+      pt_All[3] = surfPos (u+du, v                 );
+      pt_All[4] = surfPos (u+du*0.5, v-dv*myCoor   );
+      pt_All[5] = surfPos (u-du*0.5, v-dv*myCoor   );
 
       beginShape();
-      vertex(pt_1.x, pt_1.y, pt_1.z);
-      vertex(pt_2.x, pt_2.y, pt_2.z);
-      vertex(pt_3.x, pt_3.y, pt_3.z);
-      vertex(pt_4.x, pt_4.y, pt_4.z);
-      vertex(pt_5.x, pt_5.y, pt_5.z);
-      vertex(pt_6.x, pt_6.y, pt_6.z);
-      vertex(pt_1.x, pt_1.y, pt_1.z);
+      {
+        vertex(pt_All[0].x, pt_All[0].y, pt_All[0].z);
+        vertex(pt_All[1].x, pt_All[1].y, pt_All[1].z);
+        vertex(pt_All[2].x, pt_All[2].y, pt_All[2].z);
+        vertex(pt_All[3].x, pt_All[3].y, pt_All[3].z);
+        vertex(pt_All[4].x, pt_All[4].y, pt_All[4].z);
+        vertex(pt_All[5].x, pt_All[5].y, pt_All[5].z);
+        vertex(pt_All[0].x, pt_All[0].y, pt_All[0].z);
+      }
       endShape();
 
-      int i=floor(u);
-      int j=floor(v);
-
-      if(distObjects[i][j].mine==null)
-      {
-        distObjects[i][j].position(pt_1, pt_2);
-      }
+      //println("i: " + l + "| j: " + m);
+      distObjects[l][m].position(pt_All);
 
       u=pastU; // Set the counter back to the orginal.
     }
@@ -50,10 +52,25 @@ void drawSurf(float du, float dv)
 
 void drawNrml(float du, float dv)
 {
-  stroke(0,1,1);
-  for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du) {
-    for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
-      PVector vN_1 = surfPos(u        , v );
+  stroke(0, 1, 1);
+ boolean odd=false;
+  int l=0;
+
+  for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
+    odd=!odd; // Every second row is selected
+    l++;
+    int m=0;
+    for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
+      m++;
+      float pastU=u; // Memorize current position.
+
+      if (odd) {
+        u+=du*1.5;
+      } // Every second row should be shifted.
+
+
+
+      PVector vN_1 = surfPos(u, v );
       PVector vN_2 = surfPos(u+0.0001, v );
       PVector vN_3 = surfPos(u, v+0.0001 );
 
@@ -65,15 +82,11 @@ void drawNrml(float du, float dv)
 
       pushMatrix();
       translate(vN_1.x, vN_1.y, vN_1.z);
-      line(0,0,0, nrml.x*10, nrml.y*10, nrml.z*10);
+      line(0, 0, 0, nrml.x*10, nrml.y*10, nrml.z*10);
       popMatrix();
 
-      int i=floor(u);
-      int j=floor(v);
-
-
-      //distObjects[i][j].position(nrml);
-      distObjects[i][j].display(nrml, vN_1, vN_2, vN_3);
+      distObjects[l][m].setNrml(nrml, vN_1);
+      u=pastU;
     }
   }
 }

@@ -5,11 +5,12 @@ float [] knots_u;
 float [] knots_v;
 int D_u, D_v; // This is the degree.
 
-Pyramid [][] distObjects = new Pyramid[4][4];;
+Pyramid [][] distObjects = new Pyramid[60][60];
 int numOfObjects;
 
 float radius;
-float x1= 1; float y1=1;
+float x1= 1; 
+float y1=1;
 float zoom=1;
 
 int seed=1;
@@ -26,9 +27,9 @@ void setup()
   randomSeed(seed);
 
 
-  for(int i=0; i<distObjects.length; i++)
+  for (int i=0; i<distObjects.length; i++)
   {
-    for(int j=0; j<distObjects.length; j++)
+    for (int j=0; j<distObjects.length; j++)
     {
       distObjects[i][j]= new Pyramid();
     }
@@ -39,13 +40,19 @@ void setup()
 void draw()
 {
   environment();
-  //translate(-width/2,height/2);
+  translate(0,0,height/2);
 
   background(0);
   lights();
   drawSurf(0.01, 0.01);
   drawNrml(0.01, 0.01);
   drawCtrlPts();
+
+  for (int i=0; i<distObjects.length; i++) {
+    for (int j=0; j<distObjects.length; j++) {
+      distObjects[i][j].display();
+    }
+  }
 }
 
 
@@ -57,10 +64,9 @@ void makeCtrlPts()
   for (int i = 0; i <= N_u; i++) {
     for (int j = 0; j <= N_v; j++) {
       ctrl_pts[i][j] =
-      new PVector(i*width/N_u, random(height), -j*height/N_v);
+        new PVector(i*width/N_u, random(height), -j*height/N_v);
     }
   }
-
 }
 
 void makeKnots()
