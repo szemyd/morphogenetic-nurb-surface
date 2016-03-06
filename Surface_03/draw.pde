@@ -2,23 +2,21 @@ void drawSurf(float du, float dv)
 {
   fill(1);
   noStroke();
+
   boolean odd=false;
 
-    for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
-      odd=!odd;
-      for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
+  for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
+    odd=!odd; // Every second row is selected
 
-      float pastU=u;
-      if (odd)
-      {
-        println("Im in here");
-        u+=du*1.5;
-      }
-      //println(pastV);
+    for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
 
-      strokeWeight(.2);
-      stroke(0);
-      float myCoor= sqrt(0.75);
+      float pastU=u; // Memorize current position.
+      if (odd) {u+=du*1.5;} // Every second row should be shifted.
+
+      //strokeWeight(.2);
+      //stroke(0);
+
+      float myCoor= sqrt(0.75); // Calculate the 'v' distance from the middle point.
       PVector pt_1 = surfPos (u-du,       v          );
       PVector pt_2 = surfPos (u-du*0.5,   v+dv*myCoor   );
       PVector pt_3 = surfPos (u+du*0.5,   v+dv*myCoor   );
@@ -37,7 +35,15 @@ void drawSurf(float du, float dv)
       vertex(pt_1.x, pt_1.y, pt_1.z);
       endShape();
 
-      u=pastU;
+      int i=floor(u);
+      int j=floor(v);
+
+      if(distObjects[i][j].mine==null)
+      {
+        distObjects[i][j].position(pt_1, pt_2);
+      }
+
+      u=pastU; // Set the counter back to the orginal.
     }
   }
 }
@@ -64,8 +70,10 @@ void drawNrml(float du, float dv)
 
       int i=floor(u);
       int j=floor(v);
-      distObjects[i][j].position();
-      distObjects[i][j].display();
+
+
+      //distObjects[i][j].position(nrml);
+      distObjects[i][j].display(nrml, vN_1, vN_2, vN_3);
     }
   }
 }
