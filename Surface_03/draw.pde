@@ -2,19 +2,26 @@ void drawSurf(float du, float dv)
 {
   fill(1);
   noStroke();
-  for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du) {
-    for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
+  for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*4) {
+    for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv*4) {
 
-      PVector pt_1 = surfPos (u   , v   );
-      PVector pt_2 = surfPos (u+du, v   );
-      PVector pt_3 = surfPos (u+du, v+dv);
-      PVector pt_4 = surfPos (u   , v+dv);
+      float myCoor= sqrt(0.75);
+      PVector pt_1 = surfPos (u-du,       v          );
+      PVector pt_2 = surfPos (u-du*0.5,   v+dv*myCoor   );
+      PVector pt_3 = surfPos (u+du*0.5,   v+dv*myCoor   );
+      PVector pt_4 = surfPos (u+du,       v          );
+      PVector pt_5 = surfPos (u+du*0.5,   v-dv*myCoor   );
+      PVector pt_6 = surfPos (u-du*0.5,   v-dv*myCoor   );
 
-      beginShape(QUADS);
+
+      beginShape();
       vertex(pt_1.x, pt_1.y, pt_1.z);
       vertex(pt_2.x, pt_2.y, pt_2.z);
       vertex(pt_3.x, pt_3.y, pt_3.z);
       vertex(pt_4.x, pt_4.y, pt_4.z);
+      vertex(pt_5.x, pt_5.y, pt_5.z);
+      vertex(pt_6.x, pt_6.y, pt_6.z);
+      vertex(pt_1.x, pt_1.y, pt_1.z);
       endShape();
     }
   }
