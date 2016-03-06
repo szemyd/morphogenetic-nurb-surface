@@ -10,6 +10,7 @@ void drawSurf(float du, float dv)
     odd=!odd; // Every second row is selected
     l++;
     int m=0;
+    
     for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
       m++;
       float pastU=u; // Memorize current position.
@@ -42,8 +43,11 @@ void drawSurf(float du, float dv)
       }
       endShape();
 
-      //println("i: " + l + "| j: " + m);
-      distObjects[l][m].position(pt_All);
+      //if (distObjects[l][m].nrmlP.z == 0)
+      {
+        distObjects[l][m].position(pt_All);
+        println("im here");
+      }
 
       u=pastU; // Set the counter back to the orginal.
     }
@@ -53,7 +57,7 @@ void drawSurf(float du, float dv)
 void drawNrml(float du, float dv)
 {
   stroke(0, 1, 1);
- boolean odd=false;
+  boolean odd=false;
   int l=0;
 
   for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
@@ -67,7 +71,6 @@ void drawNrml(float du, float dv)
       if (odd) {
         u+=du*1.5;
       } // Every second row should be shifted.
-
 
 
       PVector vN_1 = surfPos(u, v );
@@ -86,6 +89,7 @@ void drawNrml(float du, float dv)
       popMatrix();
 
       distObjects[l][m].setNrml(nrml, vN_1);
+      
       u=pastU;
     }
   }
