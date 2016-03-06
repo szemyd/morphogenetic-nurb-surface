@@ -1,7 +1,7 @@
 void environment()
 {
   hud();
-  cameras(0);
+  //cameras(0);
 }
 
 //---> Function for cameras.

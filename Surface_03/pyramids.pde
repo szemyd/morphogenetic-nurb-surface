@@ -21,26 +21,18 @@ class Pyramid
 
   void display()
   {
-
-    //pushMatrix();
-
-    for (int i=0; i<5; i++)
+    for (int i=0; i<6; i++)
     {
       beginShape(TRIANGLE);
       {
-        vertex(pt_AllP[i].x, pt_AllP[i].y, pt_AllP[i].z);
-        vertex(pt_AllP[i+1].x, pt_AllP[i+1].y, pt_AllP[i+1].z);
+        vertex(pt_AllP[(i + 6)%6].x, pt_AllP[(i + 6)%6].y, pt_AllP[(i + 6)%6].z);
+        vertex(pt_AllP[(i+1 + 6)%6].x, pt_AllP[(i+1 + 6)%6].y, pt_AllP[(i+1 + 6)%6].z);
         vertex(nrmlP.x, nrmlP.y, nrmlP.z);
       }
-      endShape();
     }
-    //println(nrmlP);
-
-
-
-
-    // popMatrix();
+    endShape();
   }
+
 
 
   void position(PVector [] pt_All)
@@ -50,7 +42,7 @@ class Pyramid
 
   void setNrml(PVector nrml, PVector vN_1)
   {
-    nrml.mult(10);
+    nrml.mult(100);
     nrmlP = PVector.add(nrml, vN_1);
   }
 }

@@ -1,3 +1,6 @@
+import peasy.*;
+PeasyCam cam;
+
 PVector [][] ctrl_pts;
 int N_u, N_v;
 
@@ -34,13 +37,17 @@ void setup()
       distObjects[i][j]= new Pyramid();
     }
   }
+
+  cam = new PeasyCam(this, 100);
+  cam.setMinimumDistance(50);
+  cam.setMaximumDistance(500);
 }
 
 
 void draw()
 {
   environment();
-  translate(0,0,height/2);
+  translate(-width/2, 0, height/2);
 
   background(0);
   lights();
