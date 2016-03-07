@@ -35,25 +35,23 @@ void setup()
     }
   }
 
-  att= new PVector(0, 0, height/2);
+  att= new PVector(width/2, -height/2, height/3);
 }
 
 
 void draw()
 {
-  environment();
-  translate(-width/2, height/2, -height/2);
-
   background(.85);
+  environment();
   lights();
   drawSurf(0.01, 0.01);
   drawNrml(0.01, 0.01);
   drawCtrlPts();
-  
+
 
   for (int i=0; i<distObjects.length; i++) {
     for (int j=0; j<distObjects.length; j++) {
-      distObjects[i][j].attractor();
+      distObjects[i][j].distance();
       distObjects[i][j].display();
     }
   }

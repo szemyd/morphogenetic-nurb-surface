@@ -19,12 +19,13 @@ void cameras(int num)
         y1=mouseY;
       }
     }
+    
     //---> Camera Manipulation
     radius=1000;
     float a=cos(radians(x1*360/width))*sin(radians(y1*180/width))*radius;
     float b=sin(radians(x1*360/width))*sin(radians(y1*180/width))*radius;
     float c=cos(radians(y1*180/width))*radius;
-    camera(a/zoom, b/zoom, (c)/zoom, 0.0, 0.0, 0.0, 0.0, 0.0, -1);
+    camera(a/zoom+width/2, b/zoom-height/2, (c)/zoom+height/2, width/2, -height/2,height/2, 0.0, 0.0, -1);
     //<---
     break;
   case 1:
@@ -35,48 +36,16 @@ void cameras(int num)
 }
 
 
-/*
-void mouseDragged()
- {
- for (int i=0; i<chain.length; i++)
- {
- for (int j=0; j<chain[i].length; j++)
- {
- if (mouseX <= box1.x+i*12 +150+4 &&
- mouseX >= box1.x+i*12 +150-4&&
- mouseY <= box1.y+j*12+4-5 &&
- mouseY >= box1.y+j*12-4-5 )
- {
- if (mousePressed)
- {
- disable[i][j]= !disable[i][j];
- }
- }
- }
- }
- 
- 
- 
- for (int i=0; i<4; i++)
- {
- if (mouseX <= box1.x+120 &&
- mouseX >= box1.x-120&&
- mouseY <= box1.y+7.5+i*20 &&
- mouseY >= box1.y-7.5+i*20 )
- {
- rectMode(CORNER);
- fill(255);
- p[i]=mouseX-120;//-box1.x-120;
- }
- }
- 
- 
- mass=p[0]/(240/400.0);
- k=p[1]/(240/60.0);
- restL=p[2]/(240/20.0);
- damping=p[3]/(240/0.75);
- }
- */
+void attractorMan()
+{
+  cameras(1);
+  stroke(0.6);
+  rect(20, 20, 200, 200, 5);
+  fill(0);
+  ellipse((200/width)*att.x+20, (200/height)*att.y+20, 10, 10);
+}
+
+
 
 void mouseDragged()
 {
@@ -104,7 +73,6 @@ void mouseDragged()
       }
     }
   }
-  
 }
 
 
@@ -117,10 +85,10 @@ void keyPressed()
     makeCtrlPts();
   }
   //if (key == 's') attractor();
-  
 }
 
 void hud()
 {
-  //cameras(1);
+  cameras(1);
+  attractorMan();
 }

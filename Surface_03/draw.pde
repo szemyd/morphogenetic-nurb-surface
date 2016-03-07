@@ -111,11 +111,11 @@ void drawCtrlPts()
 
 void drawAttractor()
 {
-  fill(255);
+  fill(1.0);
   pushMatrix();
   {
     translate(att.x, att.y, att.z);
-    sphere(500);
+    sphere(30);
   }
   popMatrix();
   noFill();

@@ -41,21 +41,23 @@ class Pyramid
     }
   }
 
-  void attractor()
+  void distance()
   {
     PVector direction;
 
     direction= PVector.sub(nrmlP, att);
 
 
-    float distance = nrmlP.dist(att);
+    float distance = pt_AllP[0].dist(att);
     //float distance= direction.mag();
     distance= abs(distance);
 
-    if (distance<150)
+
+    //if (distance<400)
     {
-      pHeight = distance*0.5;
-      println("I'm close");
-    }
+      pHeight = 50+200/(sqrt(distance*0.5));
+      println(pHeight);
+      //println("I'm close");
+    } //else pHeight=50;
   }
 }
