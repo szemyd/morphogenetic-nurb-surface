@@ -1,7 +1,9 @@
 void environment()
 {
   hud();
-  cameras(0);
+  if (!topView) cameras(0);
+  else if (topView)cameras(2);
+  else if (sideView) cameras(3);
 }
 
 //---> Function for cameras.
@@ -31,6 +33,16 @@ void cameras(int num)
     noLights();
     camera();
     break;
+    
+    case 2:
+    lights();
+    camera(width/2, height/2, height, width/2, -height/2, 0, 0.0, 0.0, -1);
+    break;
+    
+    case 3:
+    lights();
+    camera(width/2, height/2, 0, width/2, -height/2, 0, 0.0, 0.0, -1);
+    break;
   }
 }
 
@@ -46,6 +58,8 @@ void attractorMan()
   circY= map(att.y, 0, -height, 0, height/5);
   circZ= map(att.z, 0, height, 0, height/5);
 
+  fill(0.3);
+  line(40+width/5, 20, 40+width/5, height/5+20);
 
   pushMatrix();
   {
@@ -54,8 +68,7 @@ void attractorMan()
   }
   popMatrix();
 
-  fill(0.3);
-  line(40+width/5, 20, 40+width/5, height/5+20);
+
 
   pushMatrix();
   {
@@ -69,6 +82,8 @@ void attractorMan()
 
 void mouseDragged()
 {
+  topView=false;
+  sideView=false;
   for (int i=0; i<ctrl_pts.length; i++)
   {
     for (int j=0; j<ctrl_pts.length; j++)
@@ -104,8 +119,8 @@ void mouseDragged()
 
   if (mouseX<40+width/5+35 &&
     mouseX>40+width/5-35 &&
-    mouseY<circZ+20+35 &&
-    mouseY>circZ+20-35)
+    mouseY<circZ+20+45 &&
+    mouseY>circZ+20-45)
   {
     att.z=map(mouseY, 0, height/5, 0, height);
   }
@@ -116,6 +131,50 @@ void mouseDragged()
   }
 }
 
+void mousePressed()
+{
+  if (mouseX<(20+width/5+40)+width/10+10 &&
+    mouseX>40+width/5+10 &&
+    mouseY<(height/10+30)/label.length+20+35 &&
+    mouseY>(height/10+30)/label.length+20-35)
+  {
+    myMesh=!myMesh;
+    for (int i=0; i<distObjects.length; i++)
+    {
+      for (int j=0; j<distObjects.length; j++)
+      {
+        distObjects[i][j]= new Pyramid();
+      }
+    }
+  }
+
+  if (mouseX<(20+width/5+40)+width/10+10 &&
+    mouseX>40+width/5+10 &&
+    mouseY<((height/10+30)/label.length)*2+20+35 &&
+    mouseY>((height/10+30)/label.length)*2+20-35)
+  {
+    topView=!topView;
+  }
+
+  if (mouseX<(20+width/5+40)+width/10+10 &&
+    mouseX>40+width/5+10 &&
+    mouseY<((height/10+30)/label.length)*3+20+20 &&
+    mouseY>((height/10+30)/label.length)*3+20-20)
+  {
+    topView=!topView;
+    sideView=false;
+  }
+
+  if (mouseX<(20+width/5+40)+width/10+10 &&
+    mouseX>40+width/5+10 &&
+    mouseY<((height/10+30)/label.length)*4+20+20 &&
+    mouseY>((height/10+30)/label.length)*4+20-20)
+  {
+    sideView=!sideView;
+    topView=false;
+  }
+}
+
 void keyPressed()
 {
   if (key == ' ')
@@ -123,7 +182,7 @@ void keyPressed()
     seed++;
     makeCtrlPts();
   }
-  //if (key == 's') attractor();
+  if (key == 's') myMesh=!myMesh;
 }
 
 void hud()
@@ -131,17 +190,44 @@ void hud()
   cameras(1);
   attractorMan();
 
+  fill(0.9);
   noFill();
   for (int i=0; i<label.length; i++)
   {
-  pushMatrix();
-  {
-    translate((20+width/5+40), ((height/5+10)/label.length)*i +20);
-    
-    rect(0, 0, width/10, (height/10+30)/label.length, 5);
-   text(label[i],width/20,(height/10+30)/label.length/2+5);
-    
-  }
-  popMatrix();
+    pushMatrix();
+    {
+      translate((20+width/5+40), ((height/5+10)/label.length)*i +20);
+
+      if (myMesh) 
+      {
+        if (i==0) fill(0.7);
+        else noFill();
+      } else if (topView)
+      {
+        if (i==2) fill(0.7);
+        else noFill();
+      } else if (sideView)
+      {
+        if (i==3) fill(0.7);
+        else noFill();
+      }
+      rect(0, 0, width/10, (height/10+30)/label.length, 5);
+
+      if (myMesh)
+      {
+        if (i==0) fill(0.9);
+        else fill(0.5);
+      } else if (topView)
+      {
+        if (i==2) fill(0.9);
+        else fill(0.5);
+      } else if (sideView)
+      {
+        if (i==3) fill(0.9);
+        else fill(0.5);
+      }
+      text(label[i], width/20, (height/10+30)/label.length/2+5);
+    }
+    popMatrix();
   }
 }

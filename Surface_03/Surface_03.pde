@@ -18,6 +18,11 @@ float circX, circY, circZ; // To controll the attractor.
 PVector att= new PVector();
 
 String [] label= new String[4];
+boolean myMesh=true;
+boolean topView=false;
+boolean sideView=false;
+
+
 
 
 void setup()
@@ -37,7 +42,7 @@ void setup()
       distObjects[i][j]= new Pyramid();
     }
   }
-  att= new PVector(width/2, -height/2, height/2); // The initial position of the attractor ball
+  att= new PVector(width/2, -height/2, height/3); // The initial position of the attractor ball
   label[0]= "HEX";
   label[1]= "QUAD";
   label[2]= "SIDE";

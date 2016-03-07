@@ -3,6 +3,7 @@ class Pyramid
   float pHeight;
   PVector [] pt_AllP;
   PVector nrmlP;
+  float pyramidColour=0.5;
 
   Pyramid()
   {
@@ -29,6 +30,7 @@ class Pyramid
 
   void display()
   {
+    fill(pyramidColour, 1, 1); 
     for (int i=0; i<6; i++)
     {
       beginShape(TRIANGLE);
@@ -47,5 +49,7 @@ class Pyramid
     distance= abs(distance);
 
     pHeight = 50+500/(sqrt(distance*0.5));
+   
+    pyramidColour=0.5+0.5/(sqrt(distance*0.5));
   }
 }

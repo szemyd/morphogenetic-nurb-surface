@@ -5,20 +5,26 @@ void drawSurf(float du, float dv)
 
   boolean odd=false;
   int l=0;
+  int selector;
+
+  if (myMesh)  selector=3;
+  else  selector=1;
+
+
 
   for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
     odd=!odd; // Every second row is selected
     l++;
     int m=0;
 
-    for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
+    for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*selector) {
       m++;
       float pastU=u; // Memorize current position.
 
-      if (odd) {
-        u+=du*1.5;
-      } // Every second row should be shifted.
-
+      if (myMesh) 
+      {
+        if (odd) u+=du*1.5;   // Every second row should be shifted if hex.
+      } 
 
       PVector [] pt_All= new PVector[6];
       float myCoor= sqrt(0.75); // Calculate the 'v' distance from the middle point.
@@ -43,11 +49,8 @@ void drawSurf(float du, float dv)
       }
       endShape();
 
-      //if (distObjects[l][m].nrmlP.z == 0)
-      {
-        distObjects[l][m].position(pt_All);
-        //println("im here");
-      }
+
+      distObjects[l][m].position(pt_All);
 
       u=pastU; // Set the counter back to the orginal.
     }
@@ -59,18 +62,23 @@ void drawNrml(float du, float dv)
   stroke(0, 1, 1);
   boolean odd=false;
   int l=0;
+  int selector;
+
+  if (myMesh)  selector=3;
+  else  selector=1;
 
   for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
     odd=!odd; // Every second row is selected
     l++;
     int m=0;
-    for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
+    for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*selector) {
       m++;
       float pastU=u; // Memorize current position.
 
-      if (odd) {
-        u+=du*1.5;
-      } // Every second row should be shifted.
+      if (myMesh) 
+      {
+        if (odd) u+=du*1.5;   // Every second row should be shifted if hex.
+      } 
 
 
       PVector vN_1 = surfPos(u, v );
@@ -111,13 +119,12 @@ void drawCtrlPts()
 
 void drawAttractor()
 {
-  
   pushMatrix();
   {
     translate(att.x, att.y, att.z);
-    fill(0,0,1,0.5);
+    fill(0, 0, 1, 0.5);
     sphere(30);
-    fill(0,0,1,1);
+    fill(0, 0, 1, 1);
     sphere(15);
   }
   popMatrix();
