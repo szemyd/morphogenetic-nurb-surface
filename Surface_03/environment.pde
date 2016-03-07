@@ -1,7 +1,7 @@
 void environment()
 {
   hud();
-  //cameras(0);
+  cameras(0);
 }
 
 //---> Function for cameras.
@@ -20,7 +20,7 @@ void cameras(int num)
       }
     }
     //---> Camera Manipulation
-    radius=250;
+    radius=1000;
     float a=cos(radians(x1*360/width))*sin(radians(y1*180/width))*radius;
     float b=sin(radians(x1*360/width))*sin(radians(y1*180/width))*radius;
     float c=cos(radians(y1*180/width))*radius;
@@ -116,7 +116,7 @@ void keyPressed()
     seed++;
     makeCtrlPts();
   }
-  if (key == 's') attractor();
+  //if (key == 's') attractor();
   
 }
 

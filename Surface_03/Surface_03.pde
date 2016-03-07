@@ -1,6 +1,3 @@
-import peasy.*;
-PeasyCam cam;
-
 PVector [][] ctrl_pts;
 int N_u, N_v;
 
@@ -18,7 +15,6 @@ float zoom=1;
 
 int seed=1;
 PVector att= new PVector();
-
 
 
 void setup()
@@ -39,28 +35,29 @@ void setup()
     }
   }
 
-  cam = new PeasyCam(this, 100);
-  cam.setMinimumDistance(50);
-  cam.setMaximumDistance(500);
+  att= new PVector(0, 0, height/2);
 }
 
 
 void draw()
 {
   environment();
-  translate(-width/2, 0, height/2);
+  translate(-width/2, height/2, -height/2);
 
-  background(0);
+  background(.85);
   lights();
   drawSurf(0.01, 0.01);
   drawNrml(0.01, 0.01);
   drawCtrlPts();
+  
 
   for (int i=0; i<distObjects.length; i++) {
     for (int j=0; j<distObjects.length; j++) {
+      distObjects[i][j].attractor();
       distObjects[i][j].display();
     }
   }
+  drawAttractor();
 }
 
 
@@ -72,7 +69,7 @@ void makeCtrlPts()
   for (int i = 0; i <= N_u; i++) {
     for (int j = 0; j <= N_v; j++) {
       ctrl_pts[i][j] =
-        new PVector(i*width/N_u, random(height), -j*height/N_v);
+        new PVector(i*width/N_u, -j*height/N_v, random(height/3));
     }
   }
 }

@@ -10,7 +10,7 @@ void drawSurf(float du, float dv)
     odd=!odd; // Every second row is selected
     l++;
     int m=0;
-    
+
     for (float u = knots_u[D_u]; u <= knots_u[knots_u.length-D_u-1]; u += du*3) {
       m++;
       float pastU=u; // Memorize current position.
@@ -89,7 +89,7 @@ void drawNrml(float du, float dv)
       popMatrix();
 
       distObjects[l][m].setNrml(nrml, vN_1);
-      
+
       u=pastU;
     }
   }
@@ -107,4 +107,16 @@ void drawCtrlPts()
       popMatrix();
     }
   }
+}
+
+void drawAttractor()
+{
+  fill(255);
+  pushMatrix();
+  {
+    translate(att.x, att.y, att.z);
+    sphere(500);
+  }
+  popMatrix();
+  noFill();
 }

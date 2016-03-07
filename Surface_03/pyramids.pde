@@ -43,26 +43,19 @@ class Pyramid
 
   void attractor()
   {
-    att= new PVector(width/2, height/2, height/2);
-    pushMatrix();
-    {
-      translate(att.x, att.y, att.z);
-      sphere(30);
-    }
-    popMatrix();
-
-
-
-
     PVector direction;
 
     direction= PVector.sub(nrmlP, att);
 
-    float distance= direction.mag();
 
-    if (distance<100)
+    float distance = nrmlP.dist(att);
+    //float distance= direction.mag();
+    distance= abs(distance);
+
+    if (distance<150)
     {
-      pHeight *= distance*0.1;
+      pHeight = distance*0.5;
+      println("I'm close");
     }
   }
 }
