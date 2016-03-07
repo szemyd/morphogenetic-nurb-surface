@@ -39,15 +39,28 @@ void attractorMan()
 {
   cameras(1);
   stroke(0.6);
-  rect(20, 20, 200, 200, 5);
-  fill(0);
+  rect(20, 20, width/5, height/5, 5);
+  fill(0.3);
 
-  circX= map(att.x, width, 0, 0, 200);
-  circY= map(att.y, 0, -height, 0, 200);
+  circX= map(att.x, width, 0, 0, width/5);
+  circY= map(att.y, 0, -height, 0, height/5);
+  circZ= map(att.z, 0, height, 0, height/5);
+
+
   pushMatrix();
   {
     translate(circX, circY, 0);
     ellipse(20, 20, 10, 10);
+  }
+  popMatrix();
+
+  fill(0.3);
+  line(40+width/5, 20, 40+width/5, height/5+20);
+
+  pushMatrix();
+  {
+    translate(40+width/5, circZ, 0);
+    ellipse(0, 0, 10, 10);
   }
   popMatrix();
 }
@@ -80,13 +93,21 @@ void mouseDragged()
       }
     }
   }
-  if (mouseX<circX+20+20 &&
-    mouseX>circX+20-20 &&
-    mouseY<circY+20+20 &&
-    mouseY>circY+20-20)
+  if (mouseX<circX+20+35 &&
+    mouseX>circX+20-35 &&
+    mouseY<circY+20+35 &&
+    mouseY>circY+20-35)
   {
-    att.x=map(mouseX-20, 200, 0, 0, width);
-    att.y=map(mouseY-20, 0, -200, 0, height);
+    att.x=map(mouseX-20, width/5, 0, 0, width);
+    att.y=map(mouseY-20, 0, -height/5, 0, height);
+  }
+
+  if (mouseX<40+width/5+35 &&
+    mouseX>40+width/5-35 &&
+    mouseY<circZ+20+35 &&
+    mouseY>circZ+20-35)
+  {
+    att.z=map(mouseY, 0, height/5, 0, height);
   }
 
   if (mouseButton == RIGHT) 
@@ -94,11 +115,6 @@ void mouseDragged()
     radius=mouseY-width/200;
   }
 }
-
-void mousePressed()
-{
-}
-
 
 void keyPressed()
 {
@@ -114,4 +130,18 @@ void hud()
 {
   cameras(1);
   attractorMan();
+
+  noFill();
+  for (int i=0; i<label.length; i++)
+  {
+  pushMatrix();
+  {
+    translate((20+width/5+40), ((height/5+10)/label.length)*i +20);
+    
+    rect(0, 0, width/10, (height/10+30)/label.length, 5);
+   text(label[i],width/20,(height/10+30)/label.length/2+5);
+    
+  }
+  popMatrix();
+  }
 }

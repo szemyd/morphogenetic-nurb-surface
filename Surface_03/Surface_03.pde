@@ -9,13 +9,15 @@ Pyramid [][] distObjects = new Pyramid[60][60];
 int numOfObjects;
 
 float radius=1000;
-float x1= 1; 
-float y1=1;
+float x1= 800; 
+float y1=400;
 float zoom=1;
 
 int seed=1;
-float circX, circY;
+float circX, circY, circZ; // To controll the attractor.
 PVector att= new PVector();
+
+String [] label= new String[4];
 
 
 void setup()
@@ -26,7 +28,7 @@ void setup()
   makeKnots();
 
   randomSeed(seed);
-
+  textAlign(CENTER);
 
   for (int i=0; i<distObjects.length; i++)
   {
@@ -36,6 +38,10 @@ void setup()
     }
   }
   att= new PVector(width/2, -height/2, height/2); // The initial position of the attractor ball
+  label[0]= "HEX";
+  label[1]= "QUAD";
+  label[2]= "SIDE";
+  label[3]= "TOP";
 }
 
 
@@ -47,7 +53,7 @@ void draw()
   drawSurf(0.01, 0.01);
   drawNrml(0.01, 0.01);
   drawCtrlPts();
-  
+
   for (int i=0; i<distObjects.length; i++) {
     for (int j=0; j<distObjects.length; j++) {
       distObjects[i][j].distance();
@@ -55,7 +61,6 @@ void draw()
     }
   }
   drawAttractor();
-  
 }
 
 

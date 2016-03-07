@@ -46,6 +46,6 @@ class Pyramid
     float distance = pt_AllP[0].dist(att);
     distance= abs(distance);
 
-    pHeight = 50+300/(sqrt(distance*0.5));
+    pHeight = 50+500/(sqrt(distance*0.5));
   }
 }
