@@ -8,12 +8,13 @@ int D_u, D_v; // This is the degree.
 Pyramid [][] distObjects = new Pyramid[60][60];
 int numOfObjects;
 
-float radius;
+float radius=1000;
 float x1= 1; 
 float y1=1;
 float zoom=1;
 
 int seed=1;
+float circX, circY;
 PVector att= new PVector();
 
 
@@ -34,8 +35,7 @@ void setup()
       distObjects[i][j]= new Pyramid();
     }
   }
-
-  att= new PVector(width/2, -height/2, height/3);
+  att= new PVector(width/2, -height/2, height/2); // The initial position of the attractor ball
 }
 
 
@@ -47,8 +47,7 @@ void draw()
   drawSurf(0.01, 0.01);
   drawNrml(0.01, 0.01);
   drawCtrlPts();
-
-
+  
   for (int i=0; i<distObjects.length; i++) {
     for (int j=0; j<distObjects.length; j++) {
       distObjects[i][j].distance();
@@ -56,6 +55,7 @@ void draw()
     }
   }
   drawAttractor();
+  
 }
 
 

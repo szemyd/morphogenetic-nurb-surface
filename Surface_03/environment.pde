@@ -19,13 +19,12 @@ void cameras(int num)
         y1=mouseY;
       }
     }
-    
+
     //---> Camera Manipulation
-    radius=1000;
     float a=cos(radians(x1*360/width))*sin(radians(y1*180/width))*radius;
     float b=sin(radians(x1*360/width))*sin(radians(y1*180/width))*radius;
     float c=cos(radians(y1*180/width))*radius;
-    camera(a/zoom+width/2, b/zoom-height/2, (c)/zoom+height/2, width/2, -height/2,height/2, 0.0, 0.0, -1);
+    camera(a/zoom+width/2, b/zoom-height/2, (c)/zoom+height/2, width/2, -height/2, height/2, 0.0, 0.0, -1);
     //<---
     break;
   case 1:
@@ -42,7 +41,15 @@ void attractorMan()
   stroke(0.6);
   rect(20, 20, 200, 200, 5);
   fill(0);
-  ellipse((200/width)*att.x+20, (200/height)*att.y+20, 10, 10);
+
+  circX= map(att.x, width, 0, 0, 200);
+  circY= map(att.y, 0, -height, 0, 200);
+  pushMatrix();
+  {
+    translate(circX, circY, 0);
+    ellipse(20, 20, 10, 10);
+  }
+  popMatrix();
 }
 
 
@@ -73,8 +80,24 @@ void mouseDragged()
       }
     }
   }
+  if (mouseX<circX+20+20 &&
+    mouseX>circX+20-20 &&
+    mouseY<circY+20+20 &&
+    mouseY>circY+20-20)
+  {
+    att.x=map(mouseX-20, 200, 0, 0, width);
+    att.y=map(mouseY-20, 0, -200, 0, height);
+  }
+
+  if (mouseButton == RIGHT) 
+  {
+    radius=mouseY-width/200;
+  }
 }
 
+void mousePressed()
+{
+}
 
 
 void keyPressed()
