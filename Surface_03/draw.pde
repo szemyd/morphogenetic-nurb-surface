@@ -46,7 +46,7 @@ void drawSurf(float du, float dv)
       //if (distObjects[l][m].nrmlP.z == 0)
       {
         distObjects[l][m].position(pt_All);
-        println("im here");
+        //println("im here");
       }
 
       u=pastU; // Set the counter back to the orginal.

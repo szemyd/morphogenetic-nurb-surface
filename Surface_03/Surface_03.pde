@@ -17,12 +17,13 @@ float y1=1;
 float zoom=1;
 
 int seed=1;
+PVector att= new PVector();
 
 
 
 void setup()
 {
-  size(500, 500, P3D);
+  size(1200, 800, P3D);
   colorMode(HSB, 1.0);
   makeCtrlPts();
   makeKnots();

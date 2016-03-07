@@ -6,7 +6,7 @@ class Pyramid
 
   Pyramid()
   {
-    pHeight=random(0, 60);
+    pHeight= 50; //random(0, 60);
     nrmlP= new PVector();
     pt_AllP=new PVector[6];
 
@@ -38,6 +38,31 @@ class Pyramid
         vertex(nrmlP.x, nrmlP.y, nrmlP.z);
       }
       endShape();
+    }
+  }
+
+  void attractor()
+  {
+    att= new PVector(width/2, height/2, height/2);
+    pushMatrix();
+    {
+      translate(att.x, att.y, att.z);
+      sphere(30);
+    }
+    popMatrix();
+
+
+
+
+    PVector direction;
+
+    direction= PVector.sub(nrmlP, att);
+
+    float distance= direction.mag();
+
+    if (distance<100)
+    {
+      pHeight *= distance*0.1;
     }
   }
 }
