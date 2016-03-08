@@ -30,7 +30,17 @@ class Pyramid
 
   void display()
   {
-    fill(pyramidColour, 1, 1); 
+    if (switches[4].onOff)
+    {
+      noFill();
+      stroke(pyramidColour);
+    } else
+    {
+      fill(pyramidColour, 1, 1);
+      noStroke();
+    }
+
+     
     for (int i=0; i<6; i++)
     {
       beginShape(TRIANGLE);
@@ -45,11 +55,11 @@ class Pyramid
 
   void distance()
   {
-    float distance = pt_AllP[0].dist(att);
+    float distance = pt_AllP[0].dist(att); // Calculate distance between this instances' location and the attractor
     distance= abs(distance);
 
-    pHeight = 50+500/(sqrt(distance*0.5));
-   
-    pyramidColour=0.5+0.5/(sqrt(distance*0.5));
+    pHeight = 50+500/(sqrt(distance*0.5)); // Set height of the instance according to the distance.
+
+    pyramidColour=0.5+0.5/(sqrt(distance*0.5)); // Set colour of the instance according to the distance.
   }
 }

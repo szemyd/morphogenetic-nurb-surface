@@ -2,7 +2,7 @@ void environment()
 {
   hud();
 
-  if (switches[2].onOff) cameras(2);
+  if (switches[2].onOff) cameras(2);  // Switch between views
   else if (switches[3].onOff)cameras(3);
   else cameras(0);
 }
@@ -35,15 +35,33 @@ void cameras(int num)
   case 1:
     noLights();
     camera();
+
     break;
 
   case 2:
     lights();
-    camera(width/2, -height/2, height*10, width/2, -height/2, 0.0, 0.0, 0.0, -1);
+    if (keyPressed)
+    {
+      if (key==CODED) if (keyCode==SHIFT)
+      {
+        switches[2].onOff=false;
+        switches[3].onOff=false;
+      }
+    }
+
+    camera(width/2, -height/2, height, width/2, -height/2-1, 0, 0, 0, -1);
     break;
 
   case 3:
     lights();
+    if (keyPressed)
+    {
+      if (key==CODED) if (keyCode==SHIFT)
+      {
+        switches[2].onOff=false;
+        switches[3].onOff=false;
+      }
+    }
     camera(width/2, height/2, height/6, width/2, -height/2, height/6, 0.0, 0.0, -1);
     break;
   }
@@ -142,7 +160,6 @@ void keyPressed()
     seed++;
     makeCtrlPts();
   }
-  if (key == 's') myMesh=!myMesh;
 }
 
 
@@ -158,6 +175,20 @@ void hud()
   {
     switches[i].display();
   }
+  fill(0.5);
+  textAlign(RIGHT);
+  textSize(12);
+  text("SHIFT + Mouse - Orbit", width-20, 100);
+
+  text("RIGHT CLICK + Mouse - Zoom", width-20, 120);
+  text("SPACE - Generate new surface", width-20, 140);
+
+  textMode(SHAPE);
+  textSize(22);
+  text("Mesh Generator", width-20, 40);
+  textSize(14);
+  text("Daniel Szemerey, AAC '16", width-20, 60);
+  textMode(MODEL);
 }
 
 
@@ -183,8 +214,7 @@ class Button
   {
     onOff=false;
     buttonColour=0.5;
-    rectMode(CENTER);
-    textAlign(CENTER);
+
 
     buttonPosition.x= x;
     buttonPosition.y= y;
@@ -196,6 +226,9 @@ class Button
 
   void display()
   {
+    rectMode(CENTER);
+    textAlign(CENTER);
+    textSize(12);
     pushMatrix();
     {
       //
@@ -221,8 +254,8 @@ class Button
 
       if (this==switches[0]) switches[1].onOff=!switches[0].onOff;
       if (this==switches[1])  switches[0].onOff=!switches[1].onOff;
-      if (this==switches[2]) switches[3].onOff=!switches[2].onOff;
-      if (this==switches[3])  switches[2].onOff=!switches[3].onOff;
+      if (this==switches[2]) switches[3].onOff=false;
+      if (this==switches[3])  switches[2].onOff=false;
 
 
       if (this==switches[0] || this==switches[1])

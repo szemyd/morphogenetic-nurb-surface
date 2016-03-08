@@ -1,6 +1,7 @@
 void drawSurf(float du, float dv)
 {
-  fill(1);
+
+  fill(0.5, 1, 1);
   noStroke();
 
   boolean odd=false;
