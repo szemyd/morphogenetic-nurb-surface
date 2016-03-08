@@ -22,7 +22,7 @@ boolean myMesh=true;
 boolean topView=false;
 boolean sideView=false;
 
-
+Button [] switches= new Button[4];
 
 
 void setup()
@@ -43,10 +43,13 @@ void setup()
     }
   }
   att= new PVector(width/2, -height/2, height/3); // The initial position of the attractor ball
-  label[0]= "HEX";
-  label[1]= "QUAD";
-  label[2]= "SIDE";
-  label[3]= "TOP";
+
+  switches[0]= new Button("HEX", (20+width/5+100), ((height/5+10)/switches.length),     100, (height/5)/switches.length-5);
+  switches[1]= new Button("QUAD", (20+width/5+100), ((height/5+10)/switches.length)*2,  100, (height/5)/switches.length-5);
+  switches[2]= new Button("TOP", (20+width/5+100), ((height/5+10)/switches.length)*3,  100, (height/5)/switches.length-5);
+  switches[3]= new Button("SIDE", (20+width/5+100), ((height/5+10)/switches.length)*4,   100, (height/5)/switches.length-5);
+  
+  switches[0].onOff=true;
 }
 
 

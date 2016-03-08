@@ -1,9 +1,10 @@
 void environment()
 {
   hud();
-  if (!topView) cameras(0);
-  else if (topView)cameras(2);
-  else if (sideView) cameras(3);
+
+  if (switches[2].onOff) cameras(2);
+  else if (switches[3].onOff)cameras(3);
+  else cameras(0);
 }
 
 //---> Function for cameras.
@@ -19,6 +20,8 @@ void cameras(int num)
       {
         x1=mouseX;
         y1=mouseY;
+        switches[2].onOff=false;
+        switches[3].onOff=false;
       }
     }
 
@@ -33,15 +36,15 @@ void cameras(int num)
     noLights();
     camera();
     break;
-    
-    case 2:
+
+  case 2:
     lights();
-    camera(width/2, height/2, height, width/2, -height/2, 0, 0.0, 0.0, -1);
+    camera(width/2, -height/2, height*10, width/2, -height/2, 0.0, 0.0, 0.0, -1);
     break;
-    
-    case 3:
+
+  case 3:
     lights();
-    camera(width/2, height/2, 0, width/2, -height/2, 0, 0.0, 0.0, -1);
+    camera(width/2, height/2, height/6, width/2, -height/2, height/6, 0.0, 0.0, -1);
     break;
   }
 }
@@ -51,15 +54,20 @@ void attractorMan()
 {
   cameras(1);
   stroke(0.6);
-  rect(20, 20, width/5, height/5, 5);
-  fill(0.3);
+  pushMatrix();
+  {
+    translate(width/10, height/10);
+    rect(20, 25, width/5, height/5, 5);
+    fill(0.3);
+  }
+  popMatrix();
 
   circX= map(att.x, width, 0, 0, width/5);
   circY= map(att.y, 0, -height, 0, height/5);
   circZ= map(att.z, 0, height, 0, height/5);
 
   fill(0.3);
-  line(40+width/5, 20, 40+width/5, height/5+20);
+  line(40+width/5, 25, 40+width/5, height/5+25);
 
   pushMatrix();
   {
@@ -67,7 +75,6 @@ void attractorMan()
     ellipse(20, 20, 10, 10);
   }
   popMatrix();
-
 
 
   pushMatrix();
@@ -82,8 +89,6 @@ void attractorMan()
 
 void mouseDragged()
 {
-  topView=false;
-  sideView=false;
   for (int i=0; i<ctrl_pts.length; i++)
   {
     for (int j=0; j<ctrl_pts.length; j++)
@@ -91,7 +96,6 @@ void mouseDragged()
       PVector screenPos=new PVector();
       screenPos.x= screenX(ctrl_pts[i][j].x, ctrl_pts[i][j].y, ctrl_pts[i][j].z);
       screenPos.y= screenY(ctrl_pts[i][j].x, ctrl_pts[i][j].y, ctrl_pts[i][j].z);
-
 
 
       if (mouseX<screenPos.x+2.5 &&
@@ -119,8 +123,8 @@ void mouseDragged()
 
   if (mouseX<40+width/5+35 &&
     mouseX>40+width/5-35 &&
-    mouseY<circZ+20+45 &&
-    mouseY>circZ+20-45)
+    mouseY<circZ+20+65 &&
+    mouseY>circZ+20-65)
   {
     att.z=map(mouseY, 0, height/5, 0, height);
   }
@@ -128,50 +132,6 @@ void mouseDragged()
   if (mouseButton == RIGHT) 
   {
     radius=mouseY-width/200;
-  }
-}
-
-void mousePressed()
-{
-  if (mouseX<(20+width/5+40)+width/10+10 &&
-    mouseX>40+width/5+10 &&
-    mouseY<(height/10+30)/label.length+20+35 &&
-    mouseY>(height/10+30)/label.length+20-35)
-  {
-    myMesh=!myMesh;
-    for (int i=0; i<distObjects.length; i++)
-    {
-      for (int j=0; j<distObjects.length; j++)
-      {
-        distObjects[i][j]= new Pyramid();
-      }
-    }
-  }
-
-  if (mouseX<(20+width/5+40)+width/10+10 &&
-    mouseX>40+width/5+10 &&
-    mouseY<((height/10+30)/label.length)*2+20+35 &&
-    mouseY>((height/10+30)/label.length)*2+20-35)
-  {
-    topView=!topView;
-  }
-
-  if (mouseX<(20+width/5+40)+width/10+10 &&
-    mouseX>40+width/5+10 &&
-    mouseY<((height/10+30)/label.length)*3+20+20 &&
-    mouseY>((height/10+30)/label.length)*3+20-20)
-  {
-    topView=!topView;
-    sideView=false;
-  }
-
-  if (mouseX<(20+width/5+40)+width/10+10 &&
-    mouseX>40+width/5+10 &&
-    mouseY<((height/10+30)/label.length)*4+20+20 &&
-    mouseY>((height/10+30)/label.length)*4+20-20)
-  {
-    sideView=!sideView;
-    topView=false;
   }
 }
 
@@ -185,6 +145,7 @@ void keyPressed()
   if (key == 's') myMesh=!myMesh;
 }
 
+
 void hud()
 {
   cameras(1);
@@ -192,42 +153,207 @@ void hud()
 
   fill(0.9);
   noFill();
-  for (int i=0; i<label.length; i++)
+
+  for (int i=0; i< switches.length; i++)
+  {
+    switches[i].display();
+  }
+}
+
+
+void mousePressed()
+{
+  for (int i=0; i<switches.length; i++)
+  {
+
+    switches[i].OnClick();
+  }
+}
+
+
+class Button
+{
+  boolean onOff;
+  float buttonColour;
+  float buttonSizeX, buttonSizeY;
+  PVector buttonPosition= new PVector();
+  String buttonName;
+
+  Button(String name, float x, float y, float sizeX, float sizeY)
+  {
+    onOff=false;
+    buttonColour=0.5;
+    rectMode(CENTER);
+    textAlign(CENTER);
+
+    buttonPosition.x= x;
+    buttonPosition.y= y;
+    buttonSizeX= sizeX;
+
+    buttonSizeY= sizeY;
+    buttonName= name;
+  }
+
+  void display()
   {
     pushMatrix();
     {
-      translate((20+width/5+40), ((height/5+10)/label.length)*i +20);
+      //
+      if (onOff) fill(0.5);
+      else noFill();
+      rect(buttonPosition.x, buttonPosition.y, buttonSizeX, buttonSizeY, 5);
 
-      if (myMesh) 
-      {
-        if (i==0) fill(0.7);
-        else noFill();
-      } else if (topView)
-      {
-        if (i==2) fill(0.7);
-        else noFill();
-      } else if (sideView)
-      {
-        if (i==3) fill(0.7);
-        else noFill();
-      }
-      rect(0, 0, width/10, (height/10+30)/label.length, 5);
-
-      if (myMesh)
-      {
-        if (i==0) fill(0.9);
-        else fill(0.5);
-      } else if (topView)
-      {
-        if (i==2) fill(0.9);
-        else fill(0.5);
-      } else if (sideView)
-      {
-        if (i==3) fill(0.9);
-        else fill(0.5);
-      }
-      text(label[i], width/20, (height/10+30)/label.length/2+5);
+      if (onOff) fill (0.9);
+      else fill(0.5);
+      translate(buttonPosition.x, buttonPosition.y+5, 0);
+      text(buttonName, 0, 0);
     }
     popMatrix();
   }
+  void OnClick ()
+  {
+    if (mouseX<buttonPosition.x+buttonSizeX/2 &&
+      mouseX>buttonPosition.x-buttonSizeX/2 &&
+      mouseY<buttonPosition.y+buttonSizeY/2 &&
+      mouseY>buttonPosition.y-buttonSizeY/2)
+    {
+      onOff=!onOff;
+
+      if (this==switches[0]) switches[1].onOff=!switches[0].onOff;
+      if (this==switches[1])  switches[0].onOff=!switches[1].onOff;
+      if (this==switches[2]) switches[3].onOff=!switches[2].onOff;
+      if (this==switches[3])  switches[2].onOff=!switches[3].onOff;
+
+
+      if (this==switches[0] || this==switches[1])
+      {
+        for (int i=0; i<distObjects.length; i++)
+        {
+          for (int j=0; j<distObjects.length; j++)
+          {
+            distObjects[i][j]= new Pyramid();
+          }
+        }
+      }
+    }
+  }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+{
+ void mousePressed()
+ 
+ if (mouseX<(20+width/5+40)+width/10+10 &&
+ mouseX>40+width/5+10 &&
+ mouseY<(height/10+30)/label.length+20+35 &&
+ mouseY>(height/10+30)/label.length+20-35)
+ {
+ myMesh=!myMesh;
+ for (int i=0; i<distObjects.length; i++)
+ {
+ for (int j=0; j<distObjects.length; j++)
+ {
+ distObjects[i][j]= new Pyramid();
+ }
+ }
+ }
+ 
+ if (mouseX<(20+width/5+40)+width/10+10 &&
+ mouseX>40+width/5+10 &&
+ mouseY<((height/10+30)/label.length)*2+20+35 &&
+ mouseY>((height/10+30)/label.length)*2+20-35)
+ {
+ topView=!topView;
+ }
+ 
+ if (mouseX<(20+width/5+40)+width/10+10 &&
+ mouseX>40+width/5+10 &&
+ mouseY<((height/10+30)/label.length)*3+20+20 &&
+ mouseY>((height/10+30)/label.length)*3+20-20)
+ {
+ topView=!topView;
+ sideView=false;
+ }
+ 
+ if (mouseX<(20+width/5+40)+width/10+10 &&
+ mouseX>40+width/5+10 &&
+ mouseY<((height/10+30)/label.length)*4+20+20 &&
+ mouseY>((height/10+30)/label.length)*4+20-20)
+ {
+ sideView=!sideView;
+ topView=false;
+ }
+ }
+ */
+
+/*
+  for (int i=0; i<label.length; i++)
+ {
+ pushMatrix();
+ {
+ translate((20+width/5+40), ((height/5+10)/label.length)*i +20);
+ 
+ if (myMesh) 
+ {
+ if (i==0) fill(0.7);
+ else noFill();
+ } else if (!myMesh) 
+ {
+ if (i==1) fill(0.7);
+ else noFill();
+ } 
+ if (topView)
+ {
+ if (i==2) fill(0.7);
+ else noFill();
+ } else if (sideView)
+ {
+ if (i==3) fill(0.7);
+ else noFill();
+ }
+ rect(0, 0, width/10, (height/10+30)/label.length, 5);
+ 
+ if (myMesh)
+ {
+ if (i==0) fill(0.9);
+ else fill(0.5);
+ } else if (!myMesh)
+ {
+ if (i==1) fill(0.9);
+ else fill(0.5);
+ }
+ if (topView)
+ {
+ if (i==2) fill(0.9);
+ else fill(0.5);
+ } else if (sideView)
+ {
+ if (i==3) fill(0.9);
+ else fill(0.5);
+ }
+ text(label[i], width/20, (height/10+30)/label.length/2+5);
+ }
+ popMatrix();
+ }
+ */

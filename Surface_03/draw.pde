@@ -7,7 +7,7 @@ void drawSurf(float du, float dv)
   int l=0;
   int selector;
 
-  if (myMesh)  selector=3;
+  if (switches[0].onOff==true)  selector=3;
   else  selector=1;
 
 
@@ -21,7 +21,7 @@ void drawSurf(float du, float dv)
       m++;
       float pastU=u; // Memorize current position.
 
-      if (myMesh) 
+      if (switches[0].onOff) 
       {
         if (odd) u+=du*1.5;   // Every second row should be shifted if hex.
       } 
@@ -64,7 +64,7 @@ void drawNrml(float du, float dv)
   int l=0;
   int selector;
 
-  if (myMesh)  selector=3;
+  if (switches[0].onOff==true)  selector=3;
   else  selector=1;
 
   for (float v = knots_v[D_v]; v <= knots_v[knots_v.length-D_v-1]; v += dv) {
@@ -75,7 +75,7 @@ void drawNrml(float du, float dv)
       m++;
       float pastU=u; // Memorize current position.
 
-      if (myMesh) 
+      if (switches[0].onOff) 
       {
         if (odd) u+=du*1.5;   // Every second row should be shifted if hex.
       } 
